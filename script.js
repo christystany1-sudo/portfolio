@@ -10,7 +10,7 @@ message: document.getElementById("message").value
 };
 
 try {
-const res = await fetch("https://backend-meou.onrender.com/contact", {
+const res = await fetch("https://portfolio-89dd.onrender.com", {
 method: "POST",
 headers: {
 "Content-Type": "application/json"
