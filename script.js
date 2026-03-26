@@ -10,7 +10,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const res = await fetch("https://portfolio-89dd.onrender.com/contact", {
+    await fetch("https://portfolio-89dd.onrender.com/contact", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
