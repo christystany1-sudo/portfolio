@@ -1,23 +1,38 @@
 const express = require("express");
 const cors = require("cors");
+const { Pool } = require("pg");
 
 const app = express();
 
-app.use(cors()); // IMPORTANT for GitHub Pages
+app.use(cors());
 app.use(express.json());
+
+// ✅ Connect to Railway
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
+  res.send("Backend running 🚀");
 });
 
-// Contact route
-app.post("/contact", (req, res) => {
+// ✅ SAVE DATA TO DATABASE
+app.post("/contact", async (req, res) => {
   const { name, email, message } = req.body;
 
-  console.log(name, email, message);
+  try {
+    await pool.query(
+      "INSERT INTO messages (name, email, message) VALUES ($1, $2, $3)",
+      [name, email, message]
+    );
 
-  res.send("Message received ✅");
+    res.send("Saved to DB ✅");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("DB error ❌");
+  }
 });
 
 const PORT = process.env.PORT || 5000;
